@@ -57,3 +57,62 @@ jobs:
           test -f debian/watch
           test -f debian/tests/control
           test -f debian/patches/0001-use-static-version-for-debian-builds.patch
+
+  debian-validation:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:sid
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install Debian packaging toolchain and dependencies
+        run: |
+          apt-get update
+          apt-get install -y \
+            autopkgtest \
+            build-essential \
+            ca-certificates \
+            debhelper \
+            devscripts \
+            dh-python \
+            git \
+            lintian \
+            pybuild-plugin-pyproject \
+            python3-all \
+            python3-anyio \
+            python3-hatchling \
+            python3-httpx \
+            python3-httpx-sse \
+            python3-jsonschema \
+            python3-jwt \
+            python3-multipart \
+            python3-pydantic \
+            python3-pydantic-settings \
+            python3-sse-starlette \
+            python3-starlette \
+            python3-typer \
+            python3-typing-extensions \
+            python3-typing-inspection \
+            python3-uvicorn \
+            python3-websockets
+
+      - name: Create upstream orig tarball
+        run: |
+          version="$(dpkg-parsechangelog -SVersion | sed 's/-.*//')"
+          git archive --format=tar.gz \
+            --prefix="python-mcp-${version}/" \
+            -o "../python-mcp_${version}.orig.tar.gz" \
+            HEAD
+
+      - name: Build Debian package
+        run: |
+          chmod +x debian/rules
+          dpkg-buildpackage -us -uc
+
+      - name: Run lintian
+        run: lintian ../python-mcp_1.27.0-1_*.changes
+
+      - name: Run autopkgtest
+        run: autopkgtest . -- null
