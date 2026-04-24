@@ -1,0 +1,39 @@
+python3-mcp Debian packaging notes
+==================================
+
+This package currently carries one Debian-specific source patch:
+
+- `0001-use-static-version-for-debian-builds.patch`
+
+Why the patch exists
+--------------------
+
+Upstream `mcp` derives its version dynamically from Git tags via
+`uv-dynamic-versioning`. That helper does not appear to be packaged in the
+target Debian stable base used for Parrot packaging work.
+
+For Debian-style source builds, the packaged release version should come from
+the source package metadata instead of requiring live VCS version generation at
+build time. The patch therefore:
+
+- replaces `dynamic = ["version"]` with a static release version
+- removes `uv-dynamic-versioning` from `build-system.requires`
+- keeps `hatchling` as the build backend
+
+What still needs confirmation
+-----------------------------
+
+The main remaining archive-level assumption is `python3-typing-inspection`.
+The current packaging declares it as a runtime dependency because installed MCP
+modules import `typing_inspection` directly. If Parrot does not already carry
+that package, it will need to be backported or packaged before `python3-mcp`
+can be accepted cleanly.
+
+Recommended validation
+----------------------
+
+Run the following on a Debian or Parrot host:
+
+    dpkg-buildpackage -us -uc
+    lintian ../python-mcp_1.27.0-1_*.changes
+    autopkgtest . -- null
