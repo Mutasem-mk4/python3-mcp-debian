@@ -1,0 +1,10 @@
+debian/changelog text eol=lf
+debian/control text eol=lf
+debian/copyright text eol=lf
+debian/patches/*.patch text eol=lf
+debian/patches/series text eol=lf
+debian/rules text eol=lf
+debian/source/format text eol=lf
+debian/tests/control text eol=lf
+debian/watch text eol=lf
+PACKAGING_AUDIT.md text eol=lf

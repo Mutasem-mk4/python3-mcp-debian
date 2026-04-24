@@ -151,6 +151,25 @@ The dependency story is materially better than expected because many runtime req
    - `lintian`
    - `autopkgtest`
 
+## What is now implemented locally
+
+The packaging workspace now contains:
+
+- Debian metadata under `debian/`
+- a quilt patch that replaces VCS-derived versioning with a static release
+  version for Debian builds
+- an autopkgtest smoke test
+- watch file and copyright metadata
+
+Local validation completed on a patched source copy:
+
+- `python -m build`
+- result: successful build of both `mcp-1.27.0.tar.gz` and
+  `mcp-1.27.0-py3-none-any.whl`
+
+This does not replace Debian-native validation, but it confirms the patched
+source can build without `uv-dynamic-versioning`.
+
 ## Primary sources used
 
 - PyPI project page: <https://pypi.org/project/mcp/>

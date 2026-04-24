@@ -3,6 +3,8 @@ Section: python
 Priority: optional
 Maintainer: Mutasem Kharma <140179052+Mutasem-mk4@users.noreply.github.com>
 Homepage: https://modelcontextprotocol.io
+Vcs-Git: https://github.com/Mutasem-mk4/python3-mcp-debian.git
+Vcs-Browser: https://github.com/Mutasem-mk4/python3-mcp-debian
 Standards-Version: 4.6.2
 Rules-Requires-Root: no
 Testsuite: autopkgtest-pkg-pybuild
