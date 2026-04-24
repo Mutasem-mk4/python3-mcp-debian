@@ -8,3 +8,4 @@ debian/source/format text eol=lf
 debian/tests/control text eol=lf
 debian/watch text eol=lf
 PACKAGING_AUDIT.md text eol=lf
+README.packaging.md text eol=lf

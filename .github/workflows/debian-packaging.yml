@@ -1,0 +1,59 @@
+name: Debian Packaging
+
+on:
+  push:
+    branches:
+      - main
+      - debian/packaging
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  patched-python-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Upgrade pip and install build frontend
+        run: python -m pip install --upgrade pip build
+
+      - name: Apply Debian static-version patch
+        run: git apply debian/patches/0001-use-static-version-for-debian-builds.patch
+
+      - name: Build patched source tree
+        run: python -m build
+
+  debian-metadata-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install Debian packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            debhelper \
+            dh-python \
+            pybuild-plugin-pyproject \
+            python3-all \
+            python3-hatchling
+
+      - name: Validate required Debian packaging files
+        run: |
+          test -f debian/control
+          test -f debian/changelog
+          test -f debian/rules
+          test -f debian/copyright
+          test -f debian/watch
+          test -f debian/tests/control
+          test -f debian/patches/0001-use-static-version-for-debian-builds.patch
