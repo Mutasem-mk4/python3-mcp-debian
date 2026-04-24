@@ -116,4 +116,4 @@ jobs:
         run: lintian ../python-mcp_1.27.0-1_*.changes
 
       - name: Run autopkgtest
-        run: autopkgtest . -- null
+        run: autopkgtest ../python-mcp_1.27.0-1_amd64.changes -- null
