@@ -1,0 +1,4 @@
+Tests: import-and-cli
+Depends: @
+Restrictions: superficial
+Test-Command: python3 -c "import mcp; import mcp.client.streamable_http; import mcp.client.websocket; import mcp.server.fastmcp.utilities.func_metadata" && mcp version

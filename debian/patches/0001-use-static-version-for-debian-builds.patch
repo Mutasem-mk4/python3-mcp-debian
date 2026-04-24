@@ -1,0 +1,36 @@
+Description: use static version metadata for Debian builds
+ Upstream derives the package version dynamically from VCS tags using
+ uv-dynamic-versioning. Debian builds should use the release version from
+ the source package metadata instead of requiring the VCS plugin.
+Forwarded: not-needed
+Author: Mutasem Kharma <140179052+Mutasem-mk4@users.noreply.github.com>
+Last-Update: 2026-04-24
+
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,6 +1,6 @@
+ [project]
+ name = "mcp"
+-dynamic = ["version"]
++version = "1.27.0"
+ description = "Model Context Protocol SDK"
+ readme = "README.md"
+ requires-python = ">=3.10"
+@@ -72,16 +72,9 @@ docs = [
+ ]
+ 
+ [build-system]
+-requires = ["hatchling", "uv-dynamic-versioning"]
++requires = ["hatchling"]
+ build-backend = "hatchling.build"
+ 
+-[tool.hatch.version]
+-source = "uv-dynamic-versioning"
+-
+-[tool.uv-dynamic-versioning]
+-vcs = "git"
+-style = "pep440"
+-bump = true
+ 
+ [project.urls]
+ Homepage = "https://modelcontextprotocol.io"
